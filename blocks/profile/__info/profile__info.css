@@ -9,7 +9,7 @@
 
 @media screen and (max-width: 600px) {
     .profile__info {
-        grid-template-columns: 130px max-content 32px
+        grid-template-columns: 130px max-content 32px;
     }
 }
 
