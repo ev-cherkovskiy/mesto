@@ -1,0 +1,27 @@
+.profile {
+    padding-top: 40px;
+    padding-bottom: 50px;
+    margin: 0 auto;
+    max-width: 880px;
+
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+@media screen and (max-width: calc(880px + 2*19px)) {
+    .profile {
+        width: calc(100% - 2*19px);
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .profile {
+        flex-flow: column nowrap;
+        padding-top: 42px;
+        padding-bottom: 36px;
+    }
+}

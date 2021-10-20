@@ -1,0 +1,23 @@
+.profile__description {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.21;
+    font-weight: 400;
+
+    grid-area: description;
+
+    padding-top: 16px;
+    align-self: start;
+}
+
+@media screen and (max-width: 550px) {
+    .profile__description {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .profile__description {
+        padding-top: 14px;
+    }
+}

@@ -1,0 +1,17 @@
+.photos {
+    width: 880px;
+    margin: 0 auto;
+    padding-bottom: 66px;
+}
+
+@media screen and (max-width: calc(880px + 2*19px)) {
+    .photos {
+        width: calc(100% - 2*19px);
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .photos {
+        padding-bottom: 48px;
+    }
+}

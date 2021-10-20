@@ -1,0 +1,18 @@
+.popup__container {
+    background-color: #ffffff;
+
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+  
+    width: 430px;
+    color: #000000;
+    border-radius: 10px;
+}
+
+@media  screen and (max-width: calc(430px + 2*(19px + 32px + 8px))) {
+    .popup__container {
+        width: calc(100% - 2*19px);
+    }
+    
+}

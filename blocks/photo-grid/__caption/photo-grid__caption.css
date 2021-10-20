@@ -1,0 +1,11 @@
+.photo-grid__caption {
+    margin: 0;
+    padding: 0;
+
+    height: 81px;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+}

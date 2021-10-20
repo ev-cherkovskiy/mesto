@@ -1,0 +1,28 @@
+.profile__info {
+    display: grid;
+    grid-template-columns: 150px max-content 42px;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-areas: 
+    "avatar name edit-button"
+    "avatar description ...";
+}
+
+@media screen and (max-width: 600px) {
+    .profile__info {
+        grid-template-columns: 130px max-content 32px
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .profile__info {
+        grid-template-columns: repeat(2, max-content);
+        grid-template-rows: repeat(3, max-content);
+        grid-template-areas: 
+        "avatar avatar"
+        "name edit-button"
+        "description description";
+
+        column-gap: 10px;
+        justify-items: center;
+    }
+}

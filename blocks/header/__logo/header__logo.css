@@ -1,0 +1,28 @@
+.header__logo {
+    width: 142px;
+    height: 33px;
+    padding-bottom: 41px;
+}
+
+/* Данный медиазапрос добавляет отступ слева для средних и малых разрешений
+   с соблюдением общей ширины блока. Далее используются такие же расчёты */
+@media screen and (max-width: calc(880px + 2*27px)) {
+    .header__logo {
+        padding-left: 27px;
+    }
+} 
+
+@media screen and (max-width: 550px) {
+    .header__logo {
+        width: 116.18px;
+        height: 28px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .header__logo {
+        width: 103.74px;
+        height: 24.4px;
+        padding-bottom: 31.6px;
+    }
+}
