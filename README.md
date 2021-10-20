@@ -7,7 +7,7 @@
 * Флексбокс-вёрстка;
 * Grid Layout;
 * Адаптивная вёрстка;
-* Организация системы классов и файловой структуры по [методологии БЭМ](https://ru.bem.info/methodology/quick-start/).
-* JavaScript: основы работы в браузере, навигация по DOM-дереву
+* Организация системы классов и файловой структуры по [методологии БЭМ](https://ru.bem.info/methodology/quick-start/);
+* JavaScript: основы работы в браузере, навигация по DOM-дереву.
 
-!!Проект представлен на [GitHub Pages](https://ev-cherkovskiy.github.io/mesto/)
+Проект представлен на [GitHub Pages](https://ev-cherkovskiy.github.io/mesto/)
