@@ -4,15 +4,12 @@
     border: none;
     border-radius: 2px;
     background-color: #000000;
-
     padding: 0;
     margin-bottom: 37px;
-
     color: #ffffff;
     font-size: 18px;
     line-height: 1.21;
     font-weight: 400;
-
     transition: opacity .2s ease-out;
     cursor: pointer;
 }

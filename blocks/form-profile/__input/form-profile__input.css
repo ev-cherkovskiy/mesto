@@ -4,11 +4,9 @@
     padding: 0;
     padding-bottom: 13px;
     margin-bottom: 30px;
-
     width: calc(100% - 2*36px);
     height: 14px;
     box-sizing: content-box;
-
     font-size: 14px;
     line-height: 1.21;
     font-weight: 400;
@@ -16,7 +14,6 @@
 
 .form-profile__input:focus {
     outline: none;
-
 }
 
 .form-profile__input:last-of-type {

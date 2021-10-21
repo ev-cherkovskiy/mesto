@@ -6,18 +6,26 @@
          url("./Inter-Regular.woff?v=3.19") format("woff");
   }
 
-  @font-face {
+@font-face {
+     font-family: 'Inter';
+     font-style:  normal;
+     font-weight: 500;
+     src: url("./Inter-Medium.woff2?v=3.19") format("woff2"),
+          url("./Inter-Medium.woff?v=3.19") format("woff");
+}
+
+@font-face {
      font-family: 'Inter';
      font-style:  normal;
      font-weight: 700;
      src: url("./Inter-Bold.woff2?v=3.19") format("woff2"),
           url("./Inter-Bold.woff?v=3.19") format("woff");
-  }
+}
 
-  @font-face {
+@font-face {
     font-family: 'Inter';
     font-style:  normal;
     font-weight: 900;
     src: url("./Inter-Black.woff2?v=3.19") format("woff2"),
          url("./Inter-Black.woff?v=3.19") format("woff");
-  }
+}

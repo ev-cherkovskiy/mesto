@@ -3,11 +3,9 @@
     font-size: 24px;
     line-height: 1.21;
     font-weight: 900;
-
     vertical-align: center;
     padding-left: 21px;
     margin: 0;
-
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

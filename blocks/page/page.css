@@ -2,9 +2,7 @@
     background-color: #000000;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     color: #ffffff;
-
     min-width: 320px;
-
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
