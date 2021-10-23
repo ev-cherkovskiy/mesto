@@ -5,7 +5,6 @@
 /* Шапка */
 @import url(../blocks/header/header.css);
 @import url(../blocks/header/__logo/header__logo.css);
-@import url(../blocks/header/__line/header__line.css);
 /* Основной контент */
 @import url(../blocks/content/content.css);
 /* Информация о профиле */
@@ -33,9 +32,7 @@
 @import url(../blocks/popup/_opened/popup_opened.css);
 @import url(../blocks/popup/__container/popup__container.css);
 @import url(../blocks/popup/__close-button/popup__close-button.css);
+@import url(../blocks/popup/__heading/popup__heading.css);
 @import url(../blocks/form-profile/form-profile.css);
-@import url(../blocks/form-profile/__heading/form-profile__heading.css);
 @import url(../blocks/form-profile/__input/form-profile__input.css);
-@import url(../blocks/form-profile/__input/_type/form-profile__input_type_name.css);
-@import url(../blocks/form-profile/__input/_type/form-profile__input_type_description.css);
 @import url(../blocks/form-profile/__submit-button/form-profile__submit-button.css);

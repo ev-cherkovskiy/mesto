@@ -6,6 +6,7 @@
     width: 430px;
     color: #000000;
     border-radius: 10px;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
 }
 
 @media  screen and (max-width: calc(430px + 2*(19px + 32px + 8px))) {

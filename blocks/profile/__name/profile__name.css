@@ -1,21 +1,38 @@
 .profile__name {
     margin: 0;
     font-size: 42px;
-    /* line-height: 1.14; */
-    line-height: .94;
+    line-height: 1.14;
     font-weight: 500;
     grid-area: name;
     align-self: end;
+    /* Для позиционирования имени по высоте используем отрицателный отступ, 
+       тогда совпадение будет полное */
+    margin-bottom: -8px;
+    max-width: 400px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 720px) {
     .profile__name {
-        font-size: 27px;
+        max-width: 300px;
     }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 600px) {
+    .profile__name {
+        max-width: 200px;
+        font-size: 27px;
+        line-height: 1.21;
+    }
+}
+
+@media screen and (max-width: 500px) {
     .profile__name {
         padding-top: 26px;
+        /* Добавляем отступ слева для "искусственного" выравнивания имени по центру.
+           Он равен контенту справа от имени, т.е. сумме ширины edit-кнопки и зазора. */
+        padding-left: calc(18px + 10px);
     }
 }

@@ -5,7 +5,8 @@
     background-image: url(../../../images/add_button.svg);
     background-repeat: no-repeat;
     background-position: center;
-    border: 1px solid #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 2px;
     box-sizing: border-box;
     transition: opacity .2s ease-out;
     cursor: pointer;
@@ -15,17 +16,17 @@
     opacity: .6;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 820px) {
     .profile__add-button {
         width: 50px;
         background-size: 16px;
     }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 500px) {
     .profile__add-button {
         margin-left: 0;
         width: 100%;
-        margin-top: 36px;
+        margin-top: 33px;
     }
 }

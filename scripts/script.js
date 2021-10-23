@@ -1,26 +1,34 @@
+// *** ПЕРЕМЕННЫЕ -- DOM-ЭЛЕМЕНТЫ ***
+
+// Попап
+let popup = document.querySelector('.popup');
+// Форма внутри попапа
+let formElement = document.querySelector('.form-profile');
+// Поля формы
+let formName = formElement.querySelector('.form-profile__input_type_name');
+let formJob = formElement.querySelector('.form-profile__input_type_description');
+// Имя и описание пользователя в блоке profile
+let userName = document.querySelector('.profile__name');
+let userJob = document.querySelector('.profile__description');
+// Кнопка редактирования профиля
+let editButton = document.querySelector('.profile__edit-button');
+// Кнопка закрытия попапа
+let closeButton = popup.querySelector('.popup__close-button');
+
 // *** ФУНКЦИИ ***
 
 // Открытие попапа
 function openPopup() {
     // Добавляем класс с display: flex;
-    let popup = document.querySelector('.popup');
     popup.classList.add('popup_opened');
-
     // Вводим в поле имени значение из профиля
-    let userName = document.querySelector('.profile__name').textContent.trim();
-    let formName = popup.querySelector('.form-profile__input_type_name');
-    formName.value = userName;
-
+    formName.value = userName.textContent.trim();
     // Вводим в поле с описанием значение из профиля
-    let userJob = document.querySelector('.profile__description').textContent.trim();
-    let formJob = popup.querySelector('.form-profile__input_type_description');
-    formJob.value = userJob;
+    formJob.value = userJob.textContent.trim();
 }
 
-// Закрытие попапа
+// Закрытие попапа: удаляем класс с display: flex;
 function closePopup() {
-    // Удаляем класс с display: flex;
-    let popup = document.querySelector('.popup');
     popup.classList.remove('popup_opened');
 }
 
@@ -28,31 +36,19 @@ function closePopup() {
 function formSubmitHandler(evt) {
     // Отменяем стандартную отправку формы
     evt.preventDefault();
-
     // Записываем в имя профиля значение из формы
-    let nameInput = formElement.querySelector('.form-profile__input_type_name');
-    let userName = document.querySelector('.profile__name');
-    userName.textContent = nameInput.value;
-
+    userName.textContent = formName.value;
     // Записываем в описание профиля значение из формы
-    let jobInput = formElement.querySelector('.form-profile__input_type_description');
-    let userJob = document.querySelector('.profile__description');
-    userJob.textContent = jobInput.value;
-
+    userJob.textContent = formJob.value;
     // Закрываем попап после сохранения всех значений
     closePopup();
 }
 
-// *** КОД ***
+// *** СЛУШАТЕЛИ СОБЫТИЙ ***
 
-// Вызываем функцию открытия попапа при нажатии кнопки редактирования профиля
-let editButton = document.querySelector('.profile__edit-button');
+// Вызов функции открытия попапа при нажатии кнопки редактирования профиля
 editButton.addEventListener('click', openPopup);
-
-// Вызываем функцию закрытия попапа при нажатии кнопки закрытия формы редактирования профиля
-let closeButton = document.querySelector('.popup__close-button');
+// Вызов функции закрытия попапа при нажатии кнопки закрытия формы редактирования профиля
 closeButton.addEventListener('click', closePopup);
-
-// Вызываем функцию изменения значений имени и описания профиля при отправке формы
-let formElement = document.querySelector('.popup__container');
+// Вызов функции изменения значений имени и описания профиля при отправке формы
 formElement.addEventListener('submit', formSubmitHandler);

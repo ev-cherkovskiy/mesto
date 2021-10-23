@@ -1,7 +1,6 @@
 .photo-grid__caption {
     margin: 0;
-    padding: 0;
-    height: 81px;
+    padding: 25px 0;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;

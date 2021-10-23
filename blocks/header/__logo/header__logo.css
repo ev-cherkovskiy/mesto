@@ -1,7 +1,8 @@
 .header__logo {
     width: 142px;
     height: 33px;
-    padding-bottom: 41px;
+    /* padding-bottom: 41px; --- это значение по макету, но при 36px совпадение совсем точное*/
+    padding-bottom: 36px;
 }
 
 /* Данный медиазапрос добавляет отступ слева для средних и малых разрешений
@@ -19,10 +20,10 @@
     }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 500px) {
     .header__logo {
         width: 103.74px;
         height: 24.4px;
-        padding-bottom: 31.6px;
+        padding-bottom: 26.6px;
     }
 }

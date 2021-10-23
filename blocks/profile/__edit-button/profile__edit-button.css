@@ -18,9 +18,13 @@
     opacity: .6;
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 500px) {
     .profile__edit-button {
         width: 18px;
         height: 18px;
+
+         /* Для позиционирования по высоте используем отрицателный отступ, 
+            тогда совпадение будет полное */
+        margin-bottom: -1px;
     }
 }

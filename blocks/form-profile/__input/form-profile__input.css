@@ -2,11 +2,10 @@
     border: none;
     border-bottom: 1px solid rgba(0, 0, 0, .2);
     padding: 0;
-    padding-bottom: 13px;
+    padding-bottom: 10px;
     margin-bottom: 30px;
     width: calc(100% - 2*36px);
-    height: 14px;
-    box-sizing: content-box;
+    box-sizing: border-box;
     font-size: 14px;
     line-height: 1.21;
     font-weight: 400;
