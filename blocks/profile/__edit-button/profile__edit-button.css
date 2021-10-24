@@ -12,6 +12,8 @@
     justify-self: end;
     transition: opacity .2s ease-out;
     cursor: pointer;
+    /* отступ для выравнивания элементов в сетке, чтоб было точно по макету*/
+    margin-bottom: 10px;
 }
 
 .profile__edit-button:hover {
@@ -22,9 +24,7 @@
     .profile__edit-button {
         width: 18px;
         height: 18px;
-
-         /* Для позиционирования по высоте используем отрицателный отступ, 
-            тогда совпадение будет полное */
-        margin-bottom: -1px;
+        background-size: 7.5px;
+        margin-bottom: 6px;
     }
 }

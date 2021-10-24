@@ -4,7 +4,7 @@
     line-height: 1.21;
     font-weight: 400;
     grid-area: description;
-    padding-top: 16px;
+    padding-top: 9px;
     align-self: start;
     max-width: 400px;
     text-overflow: ellipsis;
@@ -22,11 +22,5 @@
     .profile__description {
         max-width: 200px;
         font-size: 14px;
-    }
-}
-
-@media screen and (max-width: 500px) {
-    .profile__description {
-        padding-top: 16px;
     }
 }
