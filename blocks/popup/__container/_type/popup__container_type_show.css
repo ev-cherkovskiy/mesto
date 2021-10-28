@@ -5,6 +5,7 @@
     max-width: 75vw;
     margin: 0;
     padding: 0;
+    background-color: transparent;
 }
 
 /* Ниже медиазапросы немного не по заданию (ограничения по ширине не 75vw),
