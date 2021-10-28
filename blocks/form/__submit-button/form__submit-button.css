@@ -1,4 +1,4 @@
-.form-profile__submit-button {
+.form__submit-button {
     width: calc(100% - 2*36px);
     height: 50px;
     border: none;
@@ -14,12 +14,12 @@
     cursor: pointer;
 }
 
-.form-profile__submit-button:hover {
+.form__submit-button:hover {
     opacity: .8;
 }
 
 @media screen and (max-width: 450px) {
-    .form-profile__submit-button {
+    .form__submit-button {
         width: calc(100% - 2*22px);
         height: 46px;
         font-size: 14px;

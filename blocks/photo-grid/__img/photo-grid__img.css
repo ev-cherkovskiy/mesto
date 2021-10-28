@@ -1,3 +1,9 @@
 .photo-grid__img {
     width: 100%;
+    height: calc(100% - 79px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    cursor: pointer;
 }

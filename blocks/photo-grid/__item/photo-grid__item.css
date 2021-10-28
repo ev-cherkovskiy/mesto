@@ -4,6 +4,8 @@
     border-radius: 10px;
     overflow: hidden;
     background-color: #ffffff;
+    padding-top: 100%;
+    position: relative;
     /* убираем зазор между картинкой и блоком с подписью */
     line-height: 0;
 }

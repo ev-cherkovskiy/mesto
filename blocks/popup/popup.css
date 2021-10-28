@@ -1,5 +1,5 @@
 .popup {
-    display: none;
+    display: flex;
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
@@ -9,4 +9,9 @@
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 2;
+    /* Реализация плавного появления попапа */
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility .2s, opacity .2s ease-in-out;
 }

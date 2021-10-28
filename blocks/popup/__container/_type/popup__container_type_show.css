@@ -1,0 +1,23 @@
+.popup__container_type_show {
+    border-radius: 0;
+    width: max-content;
+    max-height: 75vh;
+    max-width: 75vw;
+    margin: 0;
+    padding: 0;
+}
+
+/* Ниже медиазапросы немного не по заданию (ограничения по ширине не 75vw),
+   но так картинка на малых разрешениях крупнее и при этом не вылазит за "поля",
+   общие для всей страницы. Если идея плохая, то можно просто удалить эти медиазапросы.*/
+@media screen and (max-width: calc(880px + 2*(19px + 32px + 8px))) {
+    .popup__container_type_show {
+        max-width: calc(100% - 2*(19px + 32px + 8px));
+    }
+}
+
+@media  screen and (max-width: calc(430px + 2*(19px + 32px + 8px))) {
+    .popup__container_type_show {
+        max-width: calc(100% - 2*19px);
+    }
+}

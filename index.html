@@ -34,62 +34,7 @@
         </section>
 
         <section class="photos">
-            <ul class="photo-grid">
-                <li class="photo-grid__item">
-                        <img class="photo-grid__img" src="./images/photos/mesto_bermamyt_sqr.jpg" alt="Бермамыт">
-                        <div class="photo-grid__caption">
-                            <h2 class="photo-grid__caption-text">
-                                Бермамыт
-                            </h2>
-                            <button class="photo-grid__like-button" type="button"></button>
-                        </div>
-                </li>
-                <li class="photo-grid__item">
-                        <img class="photo-grid__img" src="./images/photos/mesto_dombay_sqr.jpg" alt="Домбай">
-                        <div class="photo-grid__caption">
-                            <h2 class="photo-grid__caption-text">
-                                Домбай
-                            </h2>
-                            <button class="photo-grid__like-button" type="button"></button>
-                        </div>
-                </li>
-                <li class="photo-grid__item">
-                        <img class="photo-grid__img" src="./images/photos/mesto_kurshskaya-kosa_sqr.jpg" alt="Куршская Коса">
-                        <div class="photo-grid__caption">
-                            <h2 class="photo-grid__caption-text">
-                                Куршская Коса
-                            </h2>
-                            <button class="photo-grid__like-button" type="button"></button>
-                        </div>
-                </li>
-                <li class="photo-grid__item">
-                        <img class="photo-grid__img" src="./images/photos/mesto_nizhnevartovsk_sqr.jpg" alt="Нижневартовск">
-                        <div class="photo-grid__caption">
-                            <h2 class="photo-grid__caption-text">
-                                Нижневартовск
-                            </h2>
-                            <button class="photo-grid__like-button" type="button"></button>
-                        </div>
-                </li>
-                <li class="photo-grid__item">
-                        <img class="photo-grid__img" src="./images/photos/mesto_plyos_sqr.jpg" alt="Плёс">
-                        <div class="photo-grid__caption">
-                            <h2 class="photo-grid__caption-text">
-                                Плёс
-                            </h2>
-                            <button class="photo-grid__like-button" type="button"></button>
-                        </div>
-                </li>
-                <li class="photo-grid__item">
-                        <img class="photo-grid__img" src="./images/photos/mesto_roza-khutor_sqr.jpg" alt="Роза Хутор">
-                        <div class="photo-grid__caption">
-                            <h2 class="photo-grid__caption-text">
-                                Роза Хутор
-                            </h2>
-                            <button class="photo-grid__like-button" type="button"></button>
-                        </div>
-                </li>
-            </ul>
+            <ul class="photo-grid"></ul>
         </section>
 
     </main>
@@ -100,23 +45,59 @@
          </p>
     </footer>
 
-    <div class="popup">
+    <div class="popup popup_type_edit popup_closed">
         <div class="popup__container">
             <button class="popup__close-button" type="reset"></button>
             <h2 class="popup__heading">
                 Редактировать профиль
             </h2>
-            <form class="form-profile" name="form-profile" method="post">
-                <input class="form-profile__input form-profile__input_type_name" type="text" name="profile-name">
-                <input class="form-profile__input form-profile__input_type_description" type="text" name="profile-job">
-                <button class="form-profile__submit-button" type="submit">
+            <form class="form form_type_profile" name="form-profile" method="post">
+                <input class="form__input form__input_type_name" type="text" name="profile-name">
+                <input class="form__input form__input_type_description" type="text" name="profile-job">
+                <button class="form__submit-button" type="submit">
                     Сохранить
                 </button>
             </form>
         </div>
     </div>
+
+    <div class="popup popup_type_add popup_closed">
+        <div class="popup__container">
+            <button class="popup__close-button" type="reset"></button>
+            <h2 class="popup__heading">
+                Новое место
+            </h2>
+            <form class="form form_type_place" name="form-place" method="post">
+                <input class="form__input form__input_type_place-name" type="text" name="place-name" placeholder="Название">
+                <input class="form__input form__input_type_place-link" type="text" name="place-link" placeholder="Ссылка на картинку">
+                <button class="form__submit-button" type="submit">
+                    Создать
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="popup popup_type_show popup_closed">
+        <div class="popup__container popup__container_type_show">
+            <button class="popup__close-button" type="reset"></button>
+            <img class="popup__image" src="" alt="">
+            <h3 class="popup__description"></h3>
+        </div>
+    </div>
+
   </div> 
   
+  <template id="card">
+    <li class="photo-grid__item">
+        <div class="photo-grid__delete-button"></div>
+        <img class="photo-grid__img" src="" alt="">
+        <div class="photo-grid__caption">
+            <h2 class="photo-grid__caption-text"></h2>
+            <button class="photo-grid__like-button" type="button"></button>
+        </div>
+    </li>
+  </template>
+
   <script src="scripts/script.js"></script>
 </body>
 </html>

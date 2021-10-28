@@ -19,6 +19,7 @@
 @import url(../blocks/photos/photos.css);
 @import url(../blocks/photo-grid/photo-grid.css);
 @import url(../blocks/photo-grid/__item/photo-grid__item.css);
+@import url(../blocks/photo-grid/__delete-button/photo-grid__delete-button.css);
 @import url(../blocks/photo-grid/__img/photo-grid__img.css);
 @import url(../blocks/photo-grid/__caption/photo-grid__caption.css);
 @import url(../blocks/photo-grid/__caption-text/photo-grid__caption-text.css);
@@ -27,12 +28,17 @@
 /* Футер */
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);
-/* Попап */
+/* Попапы и формы в них */
 @import url(../blocks/popup/popup.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
+@import url(../blocks/popup/_closed/popup_closed.css);
 @import url(../blocks/popup/__container/popup__container.css);
 @import url(../blocks/popup/__close-button/popup__close-button.css);
 @import url(../blocks/popup/__heading/popup__heading.css);
-@import url(../blocks/form-profile/form-profile.css);
-@import url(../blocks/form-profile/__input/form-profile__input.css);
-@import url(../blocks/form-profile/__submit-button/form-profile__submit-button.css);
+@import url(../blocks/form/form.css);
+@import url(../blocks/form/__input/form__input.css);
+@import url(../blocks/form/__submit-button/form__submit-button.css);
+@import url(../blocks/popup/_type/popup_type_show.css);
+@import url(../blocks/popup/__container/_type/popup__container_type_show.css);
+@import url(../blocks/popup/__image/popup__image.css);
+@import url(../blocks/popup/__description/popup__description.css);
