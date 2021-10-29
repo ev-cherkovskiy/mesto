@@ -5,8 +5,8 @@ const popupTypeEdit = document.querySelector('.popup_type_edit');
 // Форма внутри попапа для редактирования профиля
 const formProfile = document.querySelector('.form_type_profile');
 // Поля формы редактирования профиля
-const formName = formProfile.querySelector('.form__input_type_name');
-const formJob = formProfile.querySelector('.form__input_type_description');
+const formProfileName = formProfile.querySelector('.form__input_type_name');
+const formProfileJob = formProfile.querySelector('.form__input_type_description');
 // Кнопка закрытия попапа редактирования профиля
 const popupTypeEditCloseButton = popupTypeEdit.querySelector('.popup__close-button');
 
@@ -70,56 +70,47 @@ const initialCards = [
 
 // *** ФУНКЦИИ ***
 
-// Открытие попапа для редактирования данных профиля
-function openPopupTypeEdit() {
+// Открытие попапа
+function openPopup(popup) {
     // Добавляем соответствующий класс
-    popupTypeEdit.classList.add('popup_opened');
+    popup.classList.add('popup_opened');
+}
+
+// Закрытие попапа
+function closePopup(popup) {
+    // Удаляем соответствующий класс
+    popup.classList.remove('popup_opened');
+}
+
+// Запись в форму для редактирования профиля данных из блока profile
+function autoFillForm() {
     // Вводим в поле имени значение из профиля
-    formName.value = userName.textContent.trim();
+    formProfileName.value = userName.textContent.trim();
     // Вводим в поле с описанием значение из профиля
-    formJob.value = userJob.textContent.trim();
-}
-
-// Открытие попапа для добавления карточки
-function openPopupTypeAdd() {
-    // Добавляем соответствующий класс
-    popupTypeAdd.classList.add('popup_opened');
-}
-
-// Открытие попапа для показа места
-function openPopupTypeShow() {
-    // Добавляем соответствующий класс
-    popupTypeShow.classList.add('popup_opened');
-}
-
-// Закрытие попапа; функция универсальная для всех попапов
-function closePopup() {
-    // Находим открытый попап
-    const openedPopup = document.querySelector('.popup_opened');
-    // Удаляем у него соответствующий класс
-    openedPopup.classList.remove('popup_opened');
+    formProfileJob.value = userJob.textContent.trim();
 }
 
 // Запись в профиль значений из формы редактирования профиля
-function formSubmitHandler(evt) {
+function formProfileSubmit(evt) {
     // Отменяем стандартную отправку формы
     evt.preventDefault();
     // Записываем в имя профиля значение из формы
-    userName.textContent = formName.value;
+    userName.textContent = formProfileName.value;
     // Записываем в описание профиля значение из формы
-    userJob.textContent = formJob.value;
+    userJob.textContent = formProfileJob.value;
     // Закрываем попап после сохранения всех значений
-    closePopup();
+    closePopup(popupTypeEdit);
 }
 
-// Добавление карточки со слушателями событий
+// Подготовка карточки со слушателями событий
 // Аргументы -- название места и ссылка на картинку
-function addCard(imageName, imageLink) {
+function generateCard(imageName, imageLink) {
     // Клонируем DOM-узел (непосредственно карточку) из шаблона
     const cardItem = cardTemplate.cloneNode(true);
     // Задаём картинке атрибуты src и alt
-    cardItem.querySelector('.photo-grid__img').src = imageLink;
-    cardItem.querySelector('.photo-grid__img').alt = imageName;
+    const cardImage = cardItem.querySelector('.photo-grid__img');
+    cardImage.src = imageLink;
+    cardImage.alt = imageName;
     // Задаём название места
     cardItem.querySelector('.photo-grid__caption-text').textContent = imageName;
     // Выносим кнопку-лайк в переменную
@@ -142,16 +133,23 @@ function addCard(imageName, imageLink) {
     const imageElement = cardItem.querySelector('.photo-grid__img');
     // 2) Вешаем на неё слушатель событий, который при нажатии на неё...
     imageElement.addEventListener('click', () => {
-        // 2.1) Открывает попап показа картинки
-        openPopupTypeShow();
-        // 2.2) Задаёт путь до этой картинки и альт
-        popupTypeShow.querySelector('.popup__image').src = imageLink;
-        popupTypeShow.querySelector('.popup__image').alt = imageName;
-        // 2.3) Задаёт подпись для этой картинки
+        // 2.1) Задаёт путь до этой картинки и альт
+        const popupImage = popupTypeShow.querySelector('.popup__image');
+        popupImage.src = imageLink;
+        popupImage.alt = imageName;
+        // 2.2) Задаёт подпись для этой картинки
         popupTypeShow.querySelector('.popup__description').textContent = imageName;
+        // 2.3) Открывает попап показа картинки
+        openPopup(popupTypeShow);
     });
-    // Добавляем подготовленную карточку в начало секции на странице
-    photoGrid.prepend(cardItem);
+    // Возвращаем подготовленную карточку как результат выполнения функции
+    return cardItem;
+}
+
+// Добавление карточки в начало секции на странице
+// Аргументы -- название места и ссылка на картинку
+function addCard(imageName, imageLink) {
+    photoGrid.prepend(generateCard(imageName, imageLink));
 }
 
 // Добавление карточки при отправке формы
@@ -167,7 +165,7 @@ function formPlaceSubmit(evt) {
         formPlaceName.value = '';
         formPlaceLink.value = '';
         // Закрываем попап после сохранения всех значений
-        closePopup();
+        closePopup(popupTypeAdd);
     }
 }
 
@@ -196,18 +194,30 @@ preparePopups();
 // *** СЛУШАТЕЛИ СОБЫТИЙ ***
 
 // Вызов функции открытия попапа редактирования профиля
-editButton.addEventListener('click', openPopupTypeEdit);
+editButton.addEventListener('click', () => {
+    openPopup(popupTypeEdit);
+    // Заполняем форму данными из профиля
+    autoFillForm();
+})
 // Вызов функции закрытия попапа редактирования профиля
-popupTypeEditCloseButton.addEventListener('click', closePopup);
+popupTypeEditCloseButton.addEventListener('click', () => {
+    closePopup(popupTypeEdit);
+});
 // Вызов функции изменения значений имени и описания профиля при отправке формы
-formProfile.addEventListener('submit', formSubmitHandler);
+formProfile.addEventListener('submit', formProfileSubmit);
 
 // Вызов функции открытия попапа добавления карточки
-addButton.addEventListener('click', openPopupTypeAdd);
+addButton.addEventListener('click', () => {
+    openPopup(popupTypeAdd);
+});
 // Вызов функции закрытия попапа добавления карточки
-popupTypeAddCloseButton.addEventListener('click', closePopup);
+popupTypeAddCloseButton.addEventListener('click', () => {
+    closePopup(popupTypeAdd);
+});
 // Вызов функции добавления карточки при отправке формы
 formPlace.addEventListener('submit', formPlaceSubmit);
 
 // Вызов функции закрытия попапа показа места
-popupTypeShowCloseButton.addEventListener('click', closePopup);
+popupTypeShowCloseButton.addEventListener('click', () => {
+    closePopup(popupTypeShow);
+});
