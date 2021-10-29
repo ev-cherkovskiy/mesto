@@ -195,9 +195,10 @@ preparePopups();
 
 // Вызов функции открытия попапа редактирования профиля
 editButton.addEventListener('click', () => {
-    openPopup(popupTypeEdit);
     // Заполняем форму данными из профиля
     autoFillForm();
+    // Открываем попап
+    openPopup(popupTypeEdit);
 })
 // Вызов функции закрытия попапа редактирования профиля
 popupTypeEditCloseButton.addEventListener('click', () => {
