@@ -45,15 +45,17 @@
          </p>
     </footer>
 
-    <div class="popup popup_type_edit popup_closed">
+    <div class="popup popup_type_edit">
         <div class="popup__container">
             <button class="popup__close-button" type="reset"></button>
             <h2 class="popup__heading">
                 Редактировать профиль
             </h2>
-            <form class="form form_type_profile" name="form-profile" method="post">
-                <input class="form__input form__input_type_name" type="text" name="profile-name">
-                <input class="form__input form__input_type_description" type="text" name="profile-job">
+            <form class="form form_type_profile" name="form-profile" method="post" novalidate>
+                <input class="form__input form__input_type_name" id="profile-name" type="text" name="profile-name" placeholder="Имя пользователя" minlength="2" maxlength="40" required>
+                <span class="profile-name-error form__input-error"></span>
+                <input class="form__input form__input_type_description" id="profile-job" type="text" name="profile-job" placeholder="Описание" minlength="2" maxlength="200" required>
+                <span class="profile-job-error form__input-error"></span>
                 <button class="form__submit-button" type="submit">
                     Сохранить
                 </button>
@@ -61,15 +63,17 @@
         </div>
     </div>
 
-    <div class="popup popup_type_add popup_closed">
+    <div class="popup popup_type_add">
         <div class="popup__container">
             <button class="popup__close-button" type="reset"></button>
             <h2 class="popup__heading">
                 Новое место
             </h2>
-            <form class="form form_type_place" name="form-place" method="post">
-                <input class="form__input form__input_type_place-name" type="text" name="place-name" placeholder="Название">
-                <input class="form__input form__input_type_place-link" type="text" name="place-link" placeholder="Ссылка на картинку">
+            <form class="form form_type_place" name="form-place" method="post" novalidate>
+                <input class="form__input form__input_type_place-name" id="place-name" type="text" name="place-name" placeholder="Название" minlength="2" maxlength="30" required>
+                <span class="place-name-error form__input-error"></span>
+                <input class="form__input form__input_type_place-link" id="place-link" type="url" name="place-link" placeholder="Ссылка на картинку" required>
+                <span class="place-link-error form__input-error"></span>
                 <button class="form__submit-button" type="submit">
                     Создать
                 </button>
@@ -77,7 +81,7 @@
         </div>
     </div>
 
-    <div class="popup popup_type_show popup_closed">
+    <div class="popup popup_type_show">
         <div class="popup__container popup__container_type_show">
             <button class="popup__close-button" type="reset"></button>
             <img class="popup__image" src="#" alt="">
@@ -98,6 +102,7 @@
     </li>
   </template>
 
-  <script src="scripts/script.js"></script>
+  <script src="./scripts/script.js"></script>
+  <script src="./scripts/validation.js"></script>
 </body>
 </html>

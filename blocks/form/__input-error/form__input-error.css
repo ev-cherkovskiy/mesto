@@ -1,0 +1,22 @@
+.form__input-error {
+    color: #ff0000;
+    font-size: 12px;
+    line-height: 1.21;
+    font-weight: 400;
+    width: calc(100% - 2*36px);
+    margin-top: -30px;
+    padding-bottom: 13px;
+    padding-top: 5px;
+    display: none;
+}
+
+.form__input-error:last-of-type {
+    margin-top: -48px;
+    padding-bottom: 29px;
+}
+
+@media screen and (max-width: 450px) {
+    .form__input-error {
+        width: calc(100% - 2*22px);
+    }
+}

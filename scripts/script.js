@@ -34,6 +34,9 @@ const editButton = document.querySelector('.profile__edit-button');
 // Кнопка добавления карточки
 const addButton = document.querySelector('.profile__add-button');
 
+// Кнопка отправки формы добавления карточки
+const formPlaceSubmitButton = formPlace.querySelector('.form__submit-button');
+
 // Секция с карточками
 const photoGrid = document.querySelector('.photo-grid');
 // Шаблон карточки
@@ -74,6 +77,10 @@ const initialCards = [
 function openPopup(popup) {
     // Добавляем соответствующий класс
     popup.classList.add('popup_opened');
+    // Добавляем попапу слушатель для закрытия нажатием на esc
+    popup.addEventListener('keydown', evt => {
+        if (evt.key === 'Escape') popup.classList.remove('popup_opened');
+    });
 }
 
 // Закрытие попапа
@@ -83,7 +90,7 @@ function closePopup(popup) {
 }
 
 // Запись в форму для редактирования профиля данных из блока profile
-function autoFillForm() {
+function autoFillFormProfile() {
     // Вводим в поле имени значение из профиля
     formProfileName.value = userName.textContent.trim();
     // Вводим в поле с описанием значение из профиля
@@ -149,38 +156,25 @@ function generateCard(imageName, imageLink) {
 // Добавление карточки в начало секции на странице
 // Аргументы -- название места и ссылка на картинку
 function addCard(imageName, imageLink) {
+    // Непосредственно добавляем карточку на страницу
     photoGrid.prepend(generateCard(imageName, imageLink));
+    // Деактивируем кнопку отправки формы на случай следующего вызова формы
+    formPlaceSubmitButton.classList.add('form__submit-button_disabled');
+    formPlaceSubmitButton.disabled = true;
 }
 
 // Добавление карточки при отправке формы
 function formPlaceSubmit(evt) {
     // Отменяем стандартную отправку формы
     evt.preventDefault();
-    // Добавляем карточку со слушателями событий, если поля формы заполнены
-    if (!checkFormPlace(formPlaceName.value, formPlaceLink.value)) {
-        alert('Необходимо заполнить все поля.');
-    } else {
-        addCard(formPlaceName.value, formPlaceLink.value);
-        // Очищаем поля формы
-        formPlaceName.value = '';
-        formPlaceLink.value = '';
-        // Закрываем попап после сохранения всех значений
-        closePopup(popupTypeAdd);
-    }
+    // Добавляем карточку
+    addCard(formPlaceName.value, formPlaceLink.value);
+    // Очищаем поля формы
+    formPlaceName.value = '';
+    formPlaceLink.value = '';
+    // Закрываем попап после сохранения всех значений
+    closePopup(popupTypeAdd);
 }
-
-// Эта функция сбрасывает классы .popup_closed для всех попапов.
-// Без неё, если не вводить класс .popup_closed, при загрузке страницы на мгновенье появляются все попапы.
-function preparePopups() {
-    popupTypeEdit.classList.remove('popup_closed');
-    popupTypeAdd.classList.remove('popup_closed');
-    popupTypeShow.classList.remove('popup_closed');
-};
-
-// Проверка, заполнены ли все поля формы при добавлении карточки
-function checkFormPlace(name, link) {
-    return Boolean(name) && Boolean(link); 
-};
 
 // *** КОД (ПРИ ЗАГРУЗКЕ СТРАНИЦЫ) ***
 
@@ -188,21 +182,20 @@ function checkFormPlace(name, link) {
 initialCards.forEach( (item) => {
     addCard(item.name, item.link);
 });
-// Подготавливаем попапы до нажатия на кнопки, чтоб трансформация отображалась корректно
-preparePopups();
 
 // *** СЛУШАТЕЛИ СОБЫТИЙ ***
 
 // Вызов функции открытия попапа редактирования профиля
 editButton.addEventListener('click', () => {
     // Заполняем форму данными из профиля
-    autoFillForm();
+    autoFillFormProfile();
     // Открываем попап
     openPopup(popupTypeEdit);
 })
 // Вызов функции закрытия попапа редактирования профиля
-popupTypeEditCloseButton.addEventListener('click', () => {
-    closePopup(popupTypeEdit);
+// Используем делегирование события. Если таргет -- кнопка закрытия или оверлей, то закрываем попап
+popupTypeEdit.addEventListener('click', evt => {
+    if (evt.target === popupTypeEditCloseButton || evt.target === popupTypeEdit) closePopup(popupTypeEdit);
 });
 // Вызов функции изменения значений имени и описания профиля при отправке формы
 formProfile.addEventListener('submit', formProfileSubmit);
@@ -212,13 +205,15 @@ addButton.addEventListener('click', () => {
     openPopup(popupTypeAdd);
 });
 // Вызов функции закрытия попапа добавления карточки
-popupTypeAddCloseButton.addEventListener('click', () => {
-    closePopup(popupTypeAdd);
+// Используем делегирование события. Если таргет -- кнопка закрытия или оверлей, то закрываем попап
+popupTypeAdd.addEventListener('click', evt => {
+    if (evt.target === popupTypeAddCloseButton || evt.target === popupTypeAdd) closePopup(popupTypeAdd);
 });
 // Вызов функции добавления карточки при отправке формы
 formPlace.addEventListener('submit', formPlaceSubmit);
 
 // Вызов функции закрытия попапа показа места
-popupTypeShowCloseButton.addEventListener('click', () => {
-    closePopup(popupTypeShow);
+// Используем делегирование события. Если таргет -- кнопка закрытия или оверлей, то закрываем попап
+popupTypeShow.addEventListener('click', evt => {
+    if (evt.target === popupTypeShowCloseButton || evt.target === popupTypeShow) closePopup(popupTypeShow);
 });
