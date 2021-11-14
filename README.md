@@ -8,6 +8,6 @@
 * Grid Layout;
 * Адаптивная вёрстка;
 * Организация системы классов и файловой структуры по [методологии БЭМ](https://ru.bem.info/methodology/quick-start/);
-* JavaScript: основы работы в браузере, навигация по DOM-дереву.
+* JavaScript: основы работы в браузере, навигация по DOM-дереву, валидация форм.
 
 Проект представлен на [GitHub Pages](https://ev-cherkovskiy.github.io/mesto/)
