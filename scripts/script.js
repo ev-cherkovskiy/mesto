@@ -42,45 +42,27 @@ const photoGrid = document.querySelector('.photo-grid');
 // Шаблон карточки
 const cardTemplate = document.querySelector('#card').content;
 
-// *** МАССИВ С ИСХОДНЫМИ ИЗОБРАЖЕНИЯМИ ***
-
-const initialCards = [
-    {
-        name: 'Бермамыт',
-        link: './images/photos/mesto_bermamyt_sqr.jpg',
-    },
-    {
-        name: 'Домбай',
-        link: './images/photos/mesto_dombay_sqr.jpg',
-    },
-    {
-        name: 'Куршская Коса',
-        link: './images/photos/mesto_kurshskaya-kosa_sqr.jpg',
-    },
-    {
-        name: 'Нижневартовск',
-        link: './images/photos/mesto_nizhnevartovsk_sqr.jpg',
-    },
-    {
-        name: 'Плёс',
-        link: './images/photos/mesto_plyos_sqr.jpg',
-    },
-    {
-        name: 'Роза Хутор',
-        link: './images/photos/mesto_roza-khutor_sqr.jpg',
-    }
-]
-
 // *** ФУНКЦИИ ***
+
+// Функция закрытия попапа при нажатии на esc
+function escapeListener(evt) {
+    // Находим открытый попап
+    const popup = document.querySelector('.popup_opened');
+    // Если нажата клавиша esc, то...
+    if (evt.key === 'Escape') {
+        // 1) закрываем попап
+        popup.classList.remove('popup_opened');
+        // 2) снимаем слушатель
+        document.removeEventListener('keydown', escapeListener);
+    };
+}
 
 // Открытие попапа
 function openPopup(popup) {
     // Добавляем соответствующий класс
     popup.classList.add('popup_opened');
     // Добавляем попапу слушатель для закрытия нажатием на esc
-    popup.addEventListener('keydown', evt => {
-        if (evt.key === 'Escape') popup.classList.remove('popup_opened');
-    });
+    document.addEventListener('keydown', escapeListener);
 }
 
 // Закрытие попапа
@@ -98,9 +80,7 @@ function autoFillFormProfile() {
 }
 
 // Запись в профиль значений из формы редактирования профиля
-function formProfileSubmit(evt) {
-    // Отменяем стандартную отправку формы
-    evt.preventDefault();
+function formProfileSubmit() {
     // Записываем в имя профиля значение из формы
     userName.textContent = formProfileName.value;
     // Записываем в описание профиля значение из формы
@@ -163,15 +143,17 @@ function addCard(imageName, imageLink) {
     formPlaceSubmitButton.disabled = true;
 }
 
+// Добавление на страницу всех карточек из исходного массива
+function addInitialCards() {
+    initialCards.forEach(item => photoGrid.append(generateCard(item.name, item.link)));
+}
+
 // Добавление карточки при отправке формы
-function formPlaceSubmit(evt) {
-    // Отменяем стандартную отправку формы
-    evt.preventDefault();
+function formPlaceSubmit() {
     // Добавляем карточку
     addCard(formPlaceName.value, formPlaceLink.value);
     // Очищаем поля формы
-    formPlaceName.value = '';
-    formPlaceLink.value = '';
+    formPlace.reset();
     // Закрываем попап после сохранения всех значений
     closePopup(popupTypeAdd);
 }
@@ -179,9 +161,7 @@ function formPlaceSubmit(evt) {
 // *** КОД (ПРИ ЗАГРУЗКЕ СТРАНИЦЫ) ***
 
 // Наполняем секцию карточками из исходного массива
-initialCards.forEach( (item) => {
-    addCard(item.name, item.link);
-});
+addInitialCards();
 
 // *** СЛУШАТЕЛИ СОБЫТИЙ ***
 

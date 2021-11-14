@@ -3,8 +3,19 @@
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(282px, 1fr));
+    /* Зафиксируем ширину элемента сетки равной ширине карточки по макету. */
+    grid-template-columns: repeat(auto-fit, 282px);
     column-gap: 17px;
     row-gap: 20px;
     justify-content: center;
+}
+
+/* Для разрешений, на которых две карточки уже не умещяются, растянем карточки
+   по ширине -- иначе маленькая карточка в центре страницы выглядит некрасиво.
+   К тому же, эти разрешения уже соответствуют достаточно компактным устройствам,
+   на которых логично показывать одну карточку по ширине. */
+@media screen and (max-width: 640px) {
+    .photo-grid {
+        grid-template-columns: repeat(auto-fit, minmax(282px, 1fr));
+    }
 }
