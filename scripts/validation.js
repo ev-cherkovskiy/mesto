@@ -1,24 +1,38 @@
 // Функция, определяющая, есть ли в форме хотя бы один невалидный инпут
 // Аргумент: список инпутов формы
 const hasInvalidInput = (inputList) => {
-    return inputList.some(inputElement => {return !inputElement.validity.valid;});
+    return inputList.some(inputElement => {
+        return !inputElement.validity.valid;
+    });
 };
+
+// Функция, которая делает кнопку неактивной
+// Аргументы: кнопка формы, объект настроек
+const makeButtonInactive = (buttonElement, config) => {
+    // Добавляем кнопке класс с неактивным стилем
+    buttonElement.classList.add(config.inactiveButtonClass);
+    // Добавляем кнопке свойство disabled
+    buttonElement.disabled = true;
+};
+
+// Функция, которая делает кнопку активной
+// Аргументы: кнопка формы, объект настроек
+const makeButtonActive = (buttonElement, config) => {
+    // Удаляем у кнопки неактивный стиль
+    buttonElement.classList.remove(config.inactiveButtonClass);
+    // Удаляем у неё свойство disabled
+    buttonElement.disabled = false;
+}
 
 // Функция, меняющая состояние кнопки отправки формы
 // Аргументы: список полей формы, кнопка отправки формы, объект настроек
 const toggleButtonState = (inputList, buttonElement, config) => {
-    // Проверяем, есть ли в форме невалидные поля. Если есть, то...
+    // Проверяем, есть ли в форме невалидные поля. Если есть, то сделать кнопку неактивной
     if (hasInvalidInput(inputList)) {
-      // 1) добавляем кнопке класс с неактивным стилем
-      buttonElement.classList.add(config.inactiveButtonClass);
-      // 2) добавляем кнопке свойство disabled
-      buttonElement.disabled = true;
-    // Если нет, то...
+        makeButtonInactive(buttonElement, config);
+    // Иначе сделать её активной
     } else {
-      // удаляем у кнопки неактивный стиль
-      buttonElement.classList.remove(config.inactiveButtonClass);
-      // удаляем у неё свойство disabled
-      buttonElement.disabled = false;
+        makeButtonActive(buttonElement, config);
     };
   }; 
 
@@ -70,7 +84,8 @@ const setEventListenersForForm = (formElement, config) => {
     // Вызываем функцию изменения состояния кнопки, чтобы кнопка становилась неактивной до начала ввода данных.
     // Это делаем для всех форм (их пока всего две, но всё же), кроме формы редактирования информации о профиле,
     // поскольу эта форма изначально заполнена всегда вследствие автозаполнения
-    if (!formElement.classList.contains('form_type_profile')) toggleButtonState(inputList, buttonElement, config);
+    if (!formElement.classList.contains(config.initiallyValidFormClass)) toggleButtonState(inputList, buttonElement, config);
+    //toggleButtonState(inputList, buttonElement, config);
     // Проходим по каждому элементу этого массива, навешивая каждому слушатель:
     inputList.forEach(inputElement => {
         inputElement.addEventListener('input', () => {
@@ -87,10 +102,19 @@ const setEventListenersForForm = (formElement, config) => {
 const enableValidation = (config) => {
     // Собираем массив форм
     const formList = Array.from(document.querySelectorAll(config.formSelector));
-    // Проходим по каждому элементу этого массива, выполняя два действия для каждого:
+    // Проходим по каждому элементу этого массива, выполняя следующие действия для каждого:
     formList.forEach(formElement => {
-        // 1) отменяем стандартную отправку формы
-        formElement.addEventListener('submit', evt => evt.preventDefault());
+        // 1) навешиваем на форму слушатель на сабмит, который...
+        formElement.addEventListener('submit', evt => {
+            // 1.1) отменяет стандартную отправку формы
+            evt.preventDefault();
+            // 1.2) если известно, что форма после отправки всегда невалидна, 
+            // то делает кнопку неактивной при следующем вызове
+            if (formElement.classList.contains(config.initiallyInvalidFormClass)) {
+                buttonElement = formElement.querySelector(config.submitButtonSelector);
+                makeButtonInactive(buttonElement, config);
+            };
+        });
         // 2) вешаем слушатели на каждый инпут формы
         setEventListenersForForm(formElement, config);
     });
@@ -103,5 +127,14 @@ enableValidation({
     submitButtonSelector: '.form__submit-button',
     inactiveButtonClass: 'form__submit-button_disabled',
     inputErrorClass: 'form__input_type_error',
-    errorClass: 'form__input-error_active'
+    errorClass: 'form__input-error_active',
+    // Здесь добавил две строчки:
+    // Класс формы, которая всегда при вызове валидная (профиль, т.к. значения берутся из секции,
+    // куда попадают только валидные значения)
+    initiallyValidFormClass: 'form_type_profile',
+    // Класс формы, которая всегда при вызове невалидна (добавления места -- пустые значения)
+    initiallyInvalidFormClass: 'form_type_place'
+    // Это сделал, чтоб переписать код без использования конкретных классов в строке 87,
+    // а также чтобы повесить изначально невалидной форме слушатель на деактивацию кнопки
+    // при отправке формы (строки 113-116)
 }); 

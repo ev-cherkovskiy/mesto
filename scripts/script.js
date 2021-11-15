@@ -1,3 +1,8 @@
+// *** КОНСТАНТЫ ***
+
+// Код клавиши Escape
+const escapeCode = 27;
+
 // *** ПЕРЕМЕННЫЕ -- DOM-ЭЛЕМЕНТЫ ***
 
 // Попап для редактирования данных профиля
@@ -34,9 +39,6 @@ const editButton = document.querySelector('.profile__edit-button');
 // Кнопка добавления карточки
 const addButton = document.querySelector('.profile__add-button');
 
-// Кнопка отправки формы добавления карточки
-const formPlaceSubmitButton = formPlace.querySelector('.form__submit-button');
-
 // Секция с карточками
 const photoGrid = document.querySelector('.photo-grid');
 // Шаблон карточки
@@ -48,13 +50,8 @@ const cardTemplate = document.querySelector('#card').content;
 function escapeListener(evt) {
     // Находим открытый попап
     const popup = document.querySelector('.popup_opened');
-    // Если нажата клавиша esc, то...
-    if (evt.key === 'Escape') {
-        // 1) закрываем попап
-        popup.classList.remove('popup_opened');
-        // 2) снимаем слушатель
-        document.removeEventListener('keydown', escapeListener);
-    };
+    // Если нажата клавиша esc, то вызываем функцию закрытия попапа
+    if (evt.which === escapeCode) closePopup(popup);
 }
 
 // Открытие попапа
@@ -69,6 +66,8 @@ function openPopup(popup) {
 function closePopup(popup) {
     // Удаляем соответствующий класс
     popup.classList.remove('popup_opened');
+    // Снимаем слушатель для закрытия нажатием на esc
+    document.removeEventListener('keydown', escapeListener);
 }
 
 // Запись в форму для редактирования профиля данных из блока profile
@@ -136,11 +135,7 @@ function generateCard(imageName, imageLink) {
 // Добавление карточки в начало секции на странице
 // Аргументы -- название места и ссылка на картинку
 function addCard(imageName, imageLink) {
-    // Непосредственно добавляем карточку на страницу
     photoGrid.prepend(generateCard(imageName, imageLink));
-    // Деактивируем кнопку отправки формы на случай следующего вызова формы
-    formPlaceSubmitButton.classList.add('form__submit-button_disabled');
-    formPlaceSubmitButton.disabled = true;
 }
 
 // Добавление на страницу всех карточек из исходного массива
