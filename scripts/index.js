@@ -1,7 +1,21 @@
+// Импорт всех модулей
+import {FormValidator} from './FormValidator.js';
+import {initialCards} from './cards.js';
+import {Card} from './Card.js';
+
 // *** КОНСТАНТЫ ***
 
 // Код клавиши Escape
-const escapeCode = 27;
+const ESCAPE_CODE = 27;
+
+// Объект настроек для валидации форм
+const config = {
+    inputSelector: '.form__input',
+    submitButtonSelector: '.form__submit-button',
+    inactiveButtonClass: 'form__submit-button_disabled',
+    inputErrorClass: 'form__input_type_error',
+    errorClass: 'form__input-error_active',
+}
 
 // *** ПЕРЕМЕННЫЕ -- DOM-ЭЛЕМЕНТЫ ***
 
@@ -26,7 +40,7 @@ const formPlaceLink = formPlace.querySelector('.form__input_type_place-link');
 const popupTypeAddCloseButton = popupTypeAdd.querySelector('.popup__close-button');
 
 // Попап для показа места
-const popupTypeShow = document.querySelector('.popup_type_show');
+export const popupTypeShow = document.querySelector('.popup_type_show');
 // Кнопка закрытия попапа показа места
 const popupTypeShowCloseButton = popupTypeShow.querySelector('.popup__close-button');
 
@@ -41,8 +55,6 @@ const addButton = document.querySelector('.profile__add-button');
 
 // Секция с карточками
 const photoGrid = document.querySelector('.photo-grid');
-// Шаблон карточки
-const cardTemplate = document.querySelector('#card').content;
 
 // *** ФУНКЦИИ ***
 
@@ -51,11 +63,11 @@ function escapeListener(evt) {
     // Находим открытый попап
     const popup = document.querySelector('.popup_opened');
     // Если нажата клавиша esc, то вызываем функцию закрытия попапа
-    if (evt.which === escapeCode) closePopup(popup);
+    if (evt.which === ESCAPE_CODE) closePopup(popup);
 }
 
 // Открытие попапа
-function openPopup(popup) {
+export function openPopup(popup) {
     // Добавляем соответствующий класс
     popup.classList.add('popup_opened');
     // Добавляем попапу слушатель для закрытия нажатием на esc
@@ -88,59 +100,23 @@ function formProfileSubmit() {
     closePopup(popupTypeEdit);
 }
 
-// Подготовка карточки со слушателями событий
-// Аргументы -- название места и ссылка на картинку
-function generateCard(imageName, imageLink) {
-    // Клонируем DOM-узел (непосредственно карточку) из шаблона
-    const cardItem = cardTemplate.cloneNode(true);
-    // Задаём картинке атрибуты src и alt
-    const cardImage = cardItem.querySelector('.photo-grid__img');
-    cardImage.src = imageLink;
-    cardImage.alt = imageName;
-    // Задаём название места
-    cardItem.querySelector('.photo-grid__caption-text').textContent = imageName;
-    // Выносим кнопку-лайк в переменную
-    const likeButton = cardItem.querySelector('.photo-grid__like-button');
-    // Вешаем на кнопку-лайк слушатель событий,
-    // который будет приписывать ей соответствующий класс при нажатии
-    likeButton.addEventListener('click', (evt) => {
-        evt.target.classList.toggle('photo-grid__like-button_active');
-    });
-    // Выносим кнопку для удаления карточки в переменную
-    const deleteButton = cardItem.querySelector('.photo-grid__delete-button');
-    // Вешаем на эту кнопку слушатель событий,
-    // который будет удалять родительский узел (саму карточку)
-    deleteButton.addEventListener('click', () => {
-       const parentItem = deleteButton.closest('.photo-grid__item');
-       parentItem.remove();
-    });
-    // Делаем изображение на карточке интерактивным:
-    // 1) Выносим картинку в переменную
-    const imageElement = cardItem.querySelector('.photo-grid__img');
-    // 2) Вешаем на неё слушатель событий, который при нажатии на неё...
-    imageElement.addEventListener('click', () => {
-        // 2.1) Задаёт путь до этой картинки и альт
-        const popupImage = popupTypeShow.querySelector('.popup__image');
-        popupImage.src = imageLink;
-        popupImage.alt = imageName;
-        // 2.2) Задаёт подпись для этой картинки
-        popupTypeShow.querySelector('.popup__description').textContent = imageName;
-        // 2.3) Открывает попап показа картинки
-        openPopup(popupTypeShow);
-    });
-    // Возвращаем подготовленную карточку как результат выполнения функции
-    return cardItem;
-}
-
 // Добавление карточки в начало секции на странице
 // Аргументы -- название места и ссылка на картинку
 function addCard(imageName, imageLink) {
-    photoGrid.prepend(generateCard(imageName, imageLink));
+    // Создаём экземпляр класса
+    const cardElement = new Card(imageName, imageLink, '#card');
+    // Добавляем в секцию на странице
+    photoGrid.prepend(cardElement.generateCard());
 }
 
 // Добавление на страницу всех карточек из исходного массива
 function addInitialCards() {
-    initialCards.forEach(item => photoGrid.append(generateCard(item.name, item.link)));
+    initialCards.forEach(item => {
+        // Для каждого элемента массива создаём экземляр карточки...
+        const cardElement = new Card(item.name, item.link, '#card');
+        // и добавляем его в секцию на страницу
+        photoGrid.append(cardElement.generateCard());
+    });
 }
 
 // Добавление карточки при отправке формы
@@ -157,6 +133,12 @@ function formPlaceSubmit() {
 
 // Наполняем секцию карточками из исходного массива
 addInitialCards();
+// Создаём экземпляры класса-валидатора
+const formProfileValidator = new FormValidator(config, '.form_type_profile');
+const formPlaceValidator = new FormValidator(config, '.form_type_place');
+// Включаем валидацию обеих форм
+formProfileValidator.enableValidation();
+formPlaceValidator.enableValidation();
 
 // *** СЛУШАТЕЛИ СОБЫТИЙ ***
 
@@ -168,9 +150,14 @@ editButton.addEventListener('click', () => {
     openPopup(popupTypeEdit);
 })
 // Вызов функции закрытия попапа редактирования профиля
-// Используем делегирование события. Если таргет -- кнопка закрытия или оверлей, то закрываем попап
+// Используем делегирование события. Если таргет -- кнопка закрытия или оверлей, то закрываем попап,
+// а также убираем все предупреждения об ошибках, поскольку при след. вызове форма вновь заполнится 
+// из профиля (т.е. валидными значениями)
 popupTypeEdit.addEventListener('click', evt => {
-    if (evt.target === popupTypeEditCloseButton || evt.target === popupTypeEdit) closePopup(popupTypeEdit);
+    if (evt.target === popupTypeEditCloseButton || evt.target === popupTypeEdit) {
+        closePopup(popupTypeEdit);
+        formProfileValidator.hideAllInputErrors();
+    };
 });
 // Вызов функции изменения значений имени и описания профиля при отправке формы
 formProfile.addEventListener('submit', formProfileSubmit);

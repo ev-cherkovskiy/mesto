@@ -1,5 +1,5 @@
 // Массив с исходными карточками
-const initialCards = [
+export const initialCards = [
     {
         name: 'Бермамыт',
         link: './images/photos/mesto_bermamyt_sqr.jpg',
