@@ -1,5 +1,5 @@
 // Импорт попапа для показа мест и функции его открытия
-//import { popupTypeShow as popup, openPopup } from "./index.js";
+import { popupTypeShow as popup, openPopup } from "./index.js";
 
 // Класс Card, экземпляры которого используются в качестве карточек с фотографиями
 // Аргументы: название места, ссылка на картинку и селектор шаблона карточки
