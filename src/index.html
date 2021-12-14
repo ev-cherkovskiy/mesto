@@ -7,21 +7,20 @@
     <title>
         Mesto
     </title>
-    <link rel="stylesheet" href="./pages/index.css">
 </head>
 
 <body>
   <div class="page">
 
     <header class="header">
-        <img class="header__logo" src="./images/logo.svg" alt="Логотип проекта">
+        <img class="header__logo" src="<%=require('./images/logo.svg')%>" alt="Логотип проекта">
     </header>
 
     <main class="content">
 
         <section class="profile">
             <div class="profile__info">
-                <img class="profile__avatar" src="./images/avatar.jpg" alt="Аватар">
+                <img class="profile__avatar" src="<%=require('./images/avatar.jpg')%>" alt="Аватар">
                 <h1 class="profile__name">
                     Жак-Ив Кусто
                 </h1>
@@ -101,13 +100,6 @@
         </div>
     </li>
   </template>
-
-  <script type="module" src="./scripts/index.js"></script>
-  <script type="module" src="./scripts/Card.js"></script>
-  <script type="module" src="./scripts/FormValidator.js"></script>
-  <script type="module" src="./scripts/utils/cards.js"></script>
-  <script type="module" src="./scripts/utils/constants.js"></script>
-  <script type="module" src="./scripts/utils/utils.js"></script>
   
 </body>
 </html>

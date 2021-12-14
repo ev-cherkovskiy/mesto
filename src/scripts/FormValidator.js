@@ -101,13 +101,12 @@ export class FormValidator {
     };
 
     // Функция, которая удаляет все предупреждения об ошибках
-    // Это публичный метод, который вызывается при закрытии попапа редактирования профиля.
+    // Это публичный метод, который вызывается при закрытии попапов
     hideAllInputErrors() {
         this._inputList.forEach(inputElement => {
             this._hideInputError(inputElement);
         });
-        // Ошибок больше нет, поэтому кнопку делаем активной
-        this._makeButtonActive();
+        this._toggleButtonState();
     };
 
     // Функция, которая включает валидацию формы

@@ -1,11 +1,12 @@
 // Класс Card, экземпляры которого используются в качестве карточек с фотографиями
-// Аргументы: название места, ссылка на картинку и селектор шаблона карточки
+// Аргументы: название места, ссылка на картинку, селектор шаблона карточки, 
+// колбэк открытия попапа нажатием на картинку
 export class Card {
-    constructor(name, link, templateSelector, openPopupHandler) {
+    constructor(name, link, templateSelector, handleCardClick) {
         this._name = name;
         this._link = link;
         this._templateSelector = templateSelector;
-        this._openPopupHandler = openPopupHandler;
+        this._handleCardClick = handleCardClick;
     }
 
     // Функция, которая возвращает шаблон карточки
@@ -39,7 +40,7 @@ export class Card {
         this._likeButton.addEventListener('click', this._likeButtonHandler);
         this._deleteButton.addEventListener('click', this._deleteButtonHandler);
         this._imageElement.addEventListener('click', () => {
-            this._openPopupHandler(this._name, this._link);
+            this._handleCardClick(this._name, this._link);
         });
     }
 
