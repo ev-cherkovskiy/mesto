@@ -2,17 +2,18 @@
 import '../pages/index.css';
 
 // Импорт классов
-import { UserInfo } from './UserInfo.js';
-import { Section } from './Section.js';
-import { Card } from './Card.js';
-import { FormValidator } from './FormValidator.js';
-import { PopupWithImage } from './PopupWithImage.js';
-import { PopupWithForm } from './PopupWithForm.js';
+import { UserInfo } from './components/UserInfo.js';
+import { Section } from './components/Section.js';
+import { Card } from './components/Card.js';
+import { FormValidator } from './components/FormValidator.js';
+import { PopupWithImage } from './components/PopupWithImage.js';
+import { PopupWithForm } from './components/PopupWithForm.js';
 
 // Импорт констант
 import { initialCards } from './utils/cards.js';
 import {
-    formValidationConfig as config,
+    config,
+    formValidationConfig,
     editButton,
     addButton,
     formProfileName,
@@ -22,31 +23,24 @@ import {
 // *** КОНСТАНТЫ ***
 
 // Информация о пользователе
-const userInfo = new UserInfo('.profile__name', '.profile__description');
+const userInfo = new UserInfo(config.userNameSelector, config.userInfoSelector);
 
 // Секция с карточками
 const photoGrid = new Section({
     items: initialCards,
     renderer: (item) => {
-        // Подготавливаем экземпляр класса карточки
-        const card = new Card(item.name, item.link, '#card', () => {
-            popupTypeShow.open(item.name, item.link);
-        });
-        // Создаём элемент карточки
-        const cardElement = card.generateCard();
-        // Добавляем карточку в секцию
-        photoGrid.addItem(cardElement);
+        // Создаём карточку
+        createCard(item.name, item.link);
     }
-}, '.photo-grid');
+}, config.photoGridSelector);
 
 // Попап редактирования профиля
-const popupTypeEdit = new PopupWithForm('.popup_type_edit', (evt) => {
+const popupTypeEdit = new PopupWithForm(config.popupTypeEditSelector, (evt, info) => {
     // Отменяем стандартную отправку формы
     evt.preventDefault();
     // Собираем нужные значения полей формы
-    const info = popupTypeEdit.getInputValues();
-    const name = info['profile-name'];
-    const job = info['profile-job'];
+    const name = info[config.userNameInputName];
+    const job = info[config.userInfoInputName];
     // Заполняем информацию о профиле
     userInfo.setUserInfo(name, job);
     // Закрываем попап
@@ -54,31 +48,24 @@ const popupTypeEdit = new PopupWithForm('.popup_type_edit', (evt) => {
 });
 
 // Попап добавления карточки
-const popupTypeAdd = new PopupWithForm('.popup_type_add', (evt) => {
+const popupTypeAdd = new PopupWithForm(config.popupTypeAddSelector, (evt, info) => {
     // Отменяем стандартную отправку формы
     evt.preventDefault();
     // Собираем нужные значения полей формы
-    const info = popupTypeAdd.getInputValues();
-    const name = info['place-name'];
-    const link = info['place-link'];
-    // Подготавливаем экземпляр класса карточки
-    const card = new Card(name, link, '#card', () => {
-        popupTypeShow.open(name, link);
-    });
-    // Создаём элемент карточки
-    const cardElement = card.generateCard();
-    // Добавляем карточку в секцию
-    photoGrid.addItem(cardElement);
+    const name = info[config.placeNameInputName];
+    const link = info[config.placeLinkInputName];
+    // Создаём карточку
+    createCard(name, link);
     // Закрываем попап
     popupTypeAdd.close();
 });
 
 // Попап показа места
-const popupTypeShow = new PopupWithImage('.popup_type_show');
+const popupTypeShow = new PopupWithImage(config.popupTypeShowSelector);
 
 // Экземпляры класса-валидатора для разных форм
-const formProfileValidator = new FormValidator(config, '.form_type_profile');
-const formPlaceValidator = new FormValidator(config, '.form_type_place');
+const formProfileValidator = new FormValidator(formValidationConfig, config.formProfileSelector);
+const formPlaceValidator = new FormValidator(formValidationConfig, config.formPlaceSelector);
 
 // *** ФУНКЦИИ ***
 
@@ -89,6 +76,18 @@ function autoFillFormProfile() {
     formProfileName.value = info.name;
     // Вводим в поле с описанием значение из профиля
     formProfileJob.value = info.job;
+}
+
+// Создание карточки
+function createCard(name, link) {
+     // Подготавливаем экземпляр класса карточки
+     const card = new Card(name, link, config.cardTemplateId, () => {
+        popupTypeShow.open(name, link);
+    });
+    // Создаём элемент карточки
+    const cardElement = card.generateCard();
+    // Добавляем карточку в секцию
+    photoGrid.addItem(cardElement);
 }
 
 // *** КОД (ПРИ ЗАГРУЗКЕ СТРАНИЦЫ) ***

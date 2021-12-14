@@ -12,8 +12,8 @@ export class PopupWithForm extends Popup {
         this._inputList = this._form.querySelectorAll('.form__input');
     }
 
-    // Добавляем новый публичный метод, который позволяет получить объект со значениями полей формы
-    getInputValues() {
+    // Добавляем новый приватный метод, который позволяет получить объект со значениями полей формы
+    _getInputValues() {
         // Создаём пустой объект
         const formValues = {};
         // Для каждого инпута из списка полей формы добавляем соответствующую строку в объекте
@@ -30,7 +30,7 @@ export class PopupWithForm extends Popup {
         super.setEventListeners();
         // Добавляем обработчик сабмита формы
         this._form.addEventListener('submit', (evt) => {
-            this._handleFormSubmit(evt);
+            this._handleFormSubmit(evt, this._getInputValues());
         });
     }
 
