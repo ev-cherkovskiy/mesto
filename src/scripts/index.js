@@ -29,8 +29,8 @@ const userInfo = new UserInfo(config.userNameSelector, config.userInfoSelector);
 const photoGrid = new Section({
     items: initialCards,
     renderer: (item) => {
-        // Создаём карточку
-        createCard(item.name, item.link);
+        // Добавляем карточку в секцию
+        photoGrid.addItem(createCard(item.name, item.link));
     }
 }, config.photoGridSelector);
 
@@ -54,8 +54,8 @@ const popupTypeAdd = new PopupWithForm(config.popupTypeAddSelector, (evt, info) 
     // Собираем нужные значения полей формы
     const name = info[config.placeNameInputName];
     const link = info[config.placeLinkInputName];
-    // Создаём карточку
-    createCard(name, link);
+    // Добавляем карточку в секцию
+    photoGrid.addItem(createCard(name, link));
     // Закрываем попап
     popupTypeAdd.close();
 });
@@ -80,14 +80,14 @@ function autoFillFormProfile() {
 
 // Создание карточки
 function createCard(name, link) {
-     // Подготавливаем экземпляр класса карточки
-     const card = new Card(name, link, config.cardTemplateId, () => {
+    // Подготавливаем экземпляр класса карточки
+    const card = new Card(name, link, config.cardTemplateId, () => {
         popupTypeShow.open(name, link);
     });
     // Создаём элемент карточки
     const cardElement = card.generateCard();
-    // Добавляем карточку в секцию
-    photoGrid.addItem(cardElement);
+    // Возвращаем элемент карточки
+    return cardElement;
 }
 
 // *** КОД (ПРИ ЗАГРУЗКЕ СТРАНИЦЫ) ***
