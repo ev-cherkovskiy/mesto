@@ -15,5 +15,4 @@
 <<<<<<< HEAD
 Проект представлен на [GitHub Pages](https://ev-cherkovskiy.github.io/mesto/)
 =======
-<!-- Проект представлен на [GitHub Pages](https://ev-cherkovskiy.github.io/mesto/) -->
->>>>>>> 9953f407daf817086211553685ace26cfce48cef
+
