@@ -9,7 +9,7 @@ export class PopupWithConfirmation extends Popup {
         // Дополняем конструктор: добавляем колбэк, который надо выполнить при подтверждении
         this._handleConfirmation = handleConfirmation;
         // Кнопка подтверждения
-        this._confirmButton = this._popup.querySelector('.form__submit-button');
+        this._confirmButton = this._popup.querySelector('.popup__submit-button');
     }
 
     // Дополняем метод открытия попапа
