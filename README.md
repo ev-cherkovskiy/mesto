@@ -12,7 +12,5 @@
 * Методы HTTP-запросов;
 * Сборка проекта с помощью Webpack.
 
-<<<<<<< HEAD
 Проект представлен на [GitHub Pages](https://ev-cherkovskiy.github.io/mesto/)
-=======
 
