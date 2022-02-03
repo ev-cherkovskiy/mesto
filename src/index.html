@@ -20,12 +20,14 @@
 
         <section class="profile">
             <div class="profile__info">
-                <img class="profile__avatar" src="<%=require('./images/avatar.jpg')%>" alt="Аватар">
+                <!-- <img class="profile__avatar" src="<%=require('./images/avatar.jpg')%>" alt="Аватар"> -->
+                <img class="profile__avatar" src="#" alt="Аватар">
+                <button class="profile__avatar-edit-button" type="button"></button>
                 <h1 class="profile__name">
-                    Жак-Ив Кусто
+                    <!-- Жак-Ив Кусто -->
                 </h1>
                 <p class="profile__description">
-                    Исследователь океана
+                    <!-- Исследователь океана -->
                 </p>
                 <button class="profile__edit-button" type="button"></button>
             </div>
@@ -62,6 +64,22 @@
         </div>
     </div>
 
+    <div class="popup popup_type_avatar">
+        <div class="popup__container">
+            <button class="popup__close-button" type="reset"></button>
+            <h2 class="popup__heading">
+                Обновить аватар
+            </h2>
+            <form class="form form_type_avatar" name="form-avatar" method="post" novalidate>
+                <input class="form__input form__input_type_avatar" id="avatar-link" type="url" name="avatar-link" placeholder="Ссылка на аватар" required>
+                <span class="avatar-link-error form__input-error"></span>
+                <button class="form__submit-button" type="submit">
+                    Сохранить
+                </button>
+            </form>
+        </div>
+    </div>
+
     <div class="popup popup_type_add">
         <div class="popup__container">
             <button class="popup__close-button" type="reset"></button>
@@ -77,6 +95,18 @@
                     Создать
                 </button>
             </form>
+        </div>
+    </div>
+
+    <div class="popup popup_type_delete">
+        <div class="popup__container">
+            <button class="popup__close-button" type="reset"></button>
+            <h2 class="popup__heading">
+                Вы уверены?
+            </h2>
+            <button class="form__submit-button" type="submit">
+                Да
+            </button>
         </div>
     </div>
 
@@ -97,6 +127,9 @@
         <div class="photo-grid__caption">
             <h2 class="photo-grid__caption-text"></h2>
             <button class="photo-grid__like-button" type="button"></button>
+            <p class="photo-grid__likes-counter">
+                
+            </p>
         </div>
     </li>
   </template>

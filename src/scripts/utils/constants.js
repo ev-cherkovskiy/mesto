@@ -9,6 +9,7 @@ export const config = {
     cardTemplateId: '#card',
     editButtonSelector: '.profile__edit-button',
     addButtonSelector: '.profile__add-button',
+    avatarButtonSelector: '.profile__avatar-edit-button',
     popupTypeEditSelector: '.popup_type_edit',
     formProfileSelector: '.form_type_profile',
     userNameInputName: 'profile-name',
@@ -17,6 +18,9 @@ export const config = {
     formPlaceSelector: '.form_type_place',
     placeNameInputName: 'place-name',
     placeLinkInputName: 'place-link',
+    popupTypeAvatarSelector: '.popup_type_avatar',
+    formAvatarSelector: '.form_type_avatar',
+    avatarInputName: 'avatar-link',
     popupTypeShowSelector: '.popup_type_show',
 }
 
@@ -38,5 +42,7 @@ export const formProfileName = formProfile.querySelector('.form__input_type_name
 export const formProfileJob = formProfile.querySelector('.form__input_type_description');
 // Кнопка редактирования профиля
 export const editButton = document.querySelector(config.editButtonSelector);
+// Кнопка обновления аватара
+export const avatarButton = document.querySelector(config.avatarButtonSelector);
 // Кнопка добавления карточки
 export const addButton = document.querySelector(config.addButtonSelector);

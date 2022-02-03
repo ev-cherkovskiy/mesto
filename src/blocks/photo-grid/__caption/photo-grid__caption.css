@@ -1,8 +1,14 @@
 .photo-grid__caption {
     margin: 0;
-    padding: 25px 0;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 230px 22px;
+    grid-template-rows: repeat(2, 1fr);
+    column-gap: calc(100% - 272px);
+    justify-content: left;
     align-items: center;
+    padding: 0;
+    grid-template-areas: 
+    "text like-btn"
+    "text like-counter";
+    height: 79px;
 }

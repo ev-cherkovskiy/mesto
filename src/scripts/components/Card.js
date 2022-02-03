@@ -1,51 +1,79 @@
 // Класс Card, экземпляры которого используются в качестве карточек с фотографиями
 // Аргументы: название места, ссылка на картинку, селектор шаблона карточки, 
-// колбэк открытия попапа нажатием на картинку
+// колбэк открытия попапа нажатием на картинку, колбэк нажатия на кнопку удаления,
+// колбэк нажатия на кнопку лайка
 export class Card {
-    constructor(name, link, templateSelector, handleCardClick) {
-        this._name = name;
-        this._link = link;
+    constructor(data, templateSelector, handleCardClick, handleDeleteButtonClick, handleLikeButtonClick) {
+        this._name = data.name;
+        this._link = data.link;
+        this._likes = data.likes;
         this._templateSelector = templateSelector;
         this._handleCardClick = handleCardClick;
+        this._handleDeleteButtonClick = handleDeleteButtonClick;
+        this._handleLikeButtonClick = handleLikeButtonClick;
+        this._id = data._id;
+        this._ownerId = data.owner._id;
     }
 
-    // Функция, которая возвращает шаблон карточки
+    // Приватный метод, который возвращает шаблон карточки
     _getTemplate() {
         return document.querySelector(this._templateSelector).content.cloneNode(true);
     }
 
-    // Функция заполнения карточки информацией
+    // Приватный метод, который реализует заполнение карточки информацией
     _fillInCard() {
         // Задаём картинке атрибуты src и alt
         this._imageElement.src = this._link;
         this._imageElement.alt = this._name;
         // Задаём название места
         this._captionElement.textContent = this._name;
+        // Задаём количество лайков
+        this._likesCounter.textContent = this._likes.length;
     }
 
-    // Обработчик клика на лайк
-    _likeButtonHandler(evt) {
-        evt.target.classList.toggle('photo-grid__like-button_active');
-    }
-
-    // Обработчик клика на кнопку удаления карточки
-    _deleteButtonHandler() {
-        const parentItem = this.closest('.photo-grid__item');
-        parentItem.remove();
-        this._cardItem = null;
-    }
-
-    // Функция, которая навешивает все обработчики события на карточку
+    // Приватный метод, который навешивает все обработчики события на карточку
     _setEventListeners() {
-        this._likeButton.addEventListener('click', this._likeButtonHandler);
-        this._deleteButton.addEventListener('click', this._deleteButtonHandler);
+        this._likeButton.addEventListener('click', this._handleLikeButtonClick);
+        this._deleteButton.addEventListener('click', this._handleDeleteButtonClick);
         this._imageElement.addEventListener('click', () => {
             this._handleCardClick(this._name, this._link);
         });
     }
 
-    // Функция, которая собирает карточку со всеми функциями и возвращает её
-    generateCard() {
+    // Публичный метод, который возвращает id пользователя, опубликовавшего карточку
+    getOwnerId() {
+        return this._ownerId;
+    }
+
+    // Публичный метод, который возвращает id карточки
+    getId() {
+        return this._id;
+    }
+
+    // Публичный метод, который возвращает true, если карточка лайкнута пользователем с данным id
+    isLikedByUser(userId) {
+        for (let key in this._likes) {
+            if (this._likes[key]._id === userId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Публичный метод, который меняет состояние кнопки лайка и обновляет счётчик
+    renderLikeButton(dataUpdated) {
+         // Cохраняем в переменную обновлённое количество лайков
+         const numberOfLikes = dataUpdated.likes.length;
+         // Обновляем количество лайков в подписе под кнопкой
+         this._likesCounter.textContent = numberOfLikes;
+         // Меняем состояние кнопки
+         this._likeButton.classList.toggle('photo-grid__like-button_active');
+    }
+
+    // Публичный метод, который собирает карточку со всеми функциями и возвращает её
+    // Аргументы: логические переменные, которые указывают на те или иные особенности разметки
+    // карточки (отсутствие кнопки удаления, закрашенная кнопка лайка)
+    generateCard(isCreatedByUser, isLikedByUser) {
         // Получаем элемент карточки по шаблону
         this._cardItem = this._getTemplate();
         // Определяем свойства карточки, которые используются при выполнении следующих функций
@@ -53,10 +81,20 @@ export class Card {
         this._captionElement = this._cardItem.querySelector('.photo-grid__caption-text');
         this._likeButton = this._cardItem.querySelector('.photo-grid__like-button');
         this._deleteButton = this._cardItem.querySelector('.photo-grid__delete-button');
+        this._likesCounter = this._cardItem.querySelector('.photo-grid__likes-counter');
         // Заполняем карточку информацией
         this._fillInCard();
         // Навешиваем все слушатели событий
         this._setEventListeners();
+        // Если карточка не создана пользователем, но убираем кнопку удаления
+        if (!isCreatedByUser) {
+            this._deleteButton.removeEventListener('click', this._handleDeleteButtonClick);
+            this._deleteButton.remove();
+        }
+        // Если карточка лайкнута пользователем, то меняем состояние кнопки лайка
+        if (isLikedByUser) {
+            this._likeButton.classList.toggle('photo-grid__like-button_active');
+        }
         // Возвращаем карточку
         return this._cardItem;
     }

@@ -10,4 +10,5 @@
     white-space: nowrap;
     overflow: hidden;
     max-width: calc(100% - 21px - 15px - 22px - 20px);
+    grid-area: text;
 }
