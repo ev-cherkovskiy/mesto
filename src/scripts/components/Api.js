@@ -8,19 +8,23 @@ export class Api {
         this._headers = new Object(options.headers);
     }
 
-// Все приватные методы названы по методам HTTP-запросов. Они представляют собой шаблоны и
-// необходимы для отправки более конкретных запросов, которые являются уже публичными методами.
+
+    // Приватный метод, который проверяет ответ от сервера, форматирует его или возващает ошибку
+    _checkResponse(res) {
+        if (res.ok) {
+            return res.json();
+        }
+
+        return Promise.reject(`Ошибка: ${res.status}`);
+    }
+
+    // Все приватные методы ниже названы по методам HTTP-запросов. Они представляют собой шаблоны и
+    // необходимы для отправки более конкретных запросов, которые являются уже публичными методами.
 
     _get(dir) {
         return fetch(this._baseUrl + dir, {
             headers: this._headers })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-
-            return Promise.reject(`Ошибка: ${res.status}`);
-        });
+        .then(this._checkResponse);
     }
 
     _patch(dir, bodyObject) {
@@ -29,13 +33,7 @@ export class Api {
             headers: this._headers,
             body: JSON.stringify(bodyObject)
         })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-
-            return Promise.reject(`Ошибка: ${res.status}`);
-        });
+        .then(this._checkResponse);
     }
 
     _post(dir, bodyObject) {
@@ -44,13 +42,7 @@ export class Api {
             headers: this._headers,
             body: JSON.stringify(bodyObject)
         })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-
-            return Promise.reject(`Ошибка: ${res.status}`);
-        });
+        .then(this._checkResponse);
     }
 
     _delete(dir1, id, dir2) {
@@ -58,13 +50,7 @@ export class Api {
             method: 'DELETE',
             headers: this._headers
         })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-
-            return Promise.reject(`Ошибка: ${res.status}`);
-        });
+        .then(this._checkResponse);
     }
 
     _put(dir1, id, dir2) {
@@ -72,13 +58,7 @@ export class Api {
             method: 'PUT',
             headers: this._headers
         })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-
-            return Promise.reject(`Ошибка: ${res.status}`);
-        });
+        .then(this._checkResponse);
     }
 
     // Публичные методы используют шаблоны, приведённые выше:

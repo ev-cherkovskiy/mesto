@@ -40,18 +40,8 @@ export class Card {
         });
     }
 
-    // Публичный метод, который возвращает id пользователя, опубликовавшего карточку
-    getOwnerId() {
-        return this._ownerId;
-    }
-
-    // Публичный метод, который возвращает id карточки
-    getId() {
-        return this._id;
-    }
-
-    // Публичный метод, который возвращает true, если карточка лайкнута пользователем с данным id
-    isLikedByUser(userId) {
+    // Приватный метод, который возвращает true, если карточка лайкнута пользователем с данным id
+    _isLikedByUser(userId) {
         for (let key in this._likes) {
             if (this._likes[key]._id === userId) {
                 return true;
@@ -60,20 +50,15 @@ export class Card {
         return false;
     }
 
-    // Публичный метод, который меняет состояние кнопки лайка и обновляет счётчик
-    renderLikeButton(dataUpdated) {
-         // Cохраняем в переменную обновлённое количество лайков
-         const numberOfLikes = dataUpdated.likes.length;
-         // Обновляем количество лайков в подписе под кнопкой
-         this._likesCounter.textContent = numberOfLikes;
-         // Меняем состояние кнопки
-         this._likeButton.classList.toggle('photo-grid__like-button_active');
+    // Приватный метод, который возвращает true, если карточка создана пользователем с данным id
+    _isCreatedByUser(userId) {
+        return (this._ownerId === userId);
     }
 
-    // Публичный метод, который собирает карточку со всеми функциями и возвращает её
+    // Приватный метод, который собирает карточку со всеми функциями и возвращает её
     // Аргументы: логические переменные, которые указывают на те или иные особенности разметки
     // карточки (отсутствие кнопки удаления, закрашенная кнопка лайка)
-    generateCard(isCreatedByUser, isLikedByUser) {
+    _generateCard(isCreatedByUser, isLikedByUser) {
         // Получаем элемент карточки по шаблону
         this._cardItem = this._getTemplate();
         // Определяем свойства карточки, которые используются при выполнении следующих функций
@@ -97,5 +82,40 @@ export class Card {
         }
         // Возвращаем карточку
         return this._cardItem;
+    }
+
+    // Публичный метод -- создание элемента карточки. Этот метод рассчитывет две вспомогательные 
+    // логические переменные и вызывает создание DOM-узла карточки: в зависимости от этих переменных
+    // карточка может не иметь кнопки удаления или отображаться сразу с закрашенной кропкой лайка.
+    createCardElement(userId) {
+        // Записываем в логическую переменную, создана ли карточка пользователем
+        const isCreatedByUser = this._isCreatedByUser(userId);
+        // Записываем в логическую переменную, лайкнута ли карточка пользователем
+        const isLikedByUser = this._isLikedByUser(userId);
+        // Вывод в консоль (опционально)
+        if (isCreatedByUser) {
+            console.log('Подготовлена карточка (создана пользователем):', this)
+        } else {
+            console.log('Подготовлена карточка:', this)
+        };
+        // Создаём DOM-элемент карточки
+        const cardElement = this._generateCard(isCreatedByUser, isLikedByUser);
+        // Возвращаем разметку
+        return cardElement;
+    }
+
+    // Публичный метод, который меняет состояние кнопки лайка и обновляет счётчик
+    renderLikeButton(dataUpdated) {
+        // Cохраняем в переменную обновлённое количество лайков
+        const numberOfLikes = dataUpdated.likes.length;
+        // Обновляем количество лайков в подписе под кнопкой
+        this._likesCounter.textContent = numberOfLikes;
+        // Меняем состояние кнопки
+        this._likeButton.classList.toggle('photo-grid__like-button_active');
+   }
+
+    // Публичный метод, который возвращает id карточки
+    getId() {
+        return this._id;
     }
 }

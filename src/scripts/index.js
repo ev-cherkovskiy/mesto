@@ -60,7 +60,14 @@ const popupTypeEdit = new PopupWithForm(config.popupTypeEditSelector, (evt, info
             console.log('Данные пользователя изменены:', userInfo.getUserInfo());
             // Закрываем попап
             popupTypeEdit.close();
-            // Меняем надпись на кнопке на исходную
+        })
+        // Обработка ошибки
+        .catch(err => {
+            // Вывод в консоль
+            console.log(err);
+        })
+        // Меняем надпись на кнопке на исходную
+        .finally(() => {
             popupTypeEdit.changeButtonCaption('Сохранить');
         });
 });
@@ -84,31 +91,44 @@ const popupTypeAvatar = new PopupWithForm(config.popupTypeAvatarSelector, (evt, 
             console.log('Данные пользователя изменены:', userInfo.getUserInfo());
             // Закрываем попап
             popupTypeAvatar.close();
-            // Меняем надпись на кнопке на исходную
+        })
+        // Обработка ошибки
+        .catch(err => {
+            // Вывод в консоль
+            console.log(err);
+        })
+        // Меняем надпись на кнопке на исходную
+        .finally(() => {
             popupTypeAvatar.changeButtonCaption('Сохранить');
         });
 });
 
-// Попап удаления карточки (ПОДУМАТЬ ЕЩЁ)
+// Попап удаления карточки
 const popupTypeDelete = new PopupWithConfirmation('.popup_type_delete', () => {
-    //
+    // Выносим карточку и её разметку в отдельные переменные
     const card = popupTypeDelete.getElement();
     const cardDOM = popupTypeDelete.getDOMElement();
-
     // Меняем надпись на кнопке
     popupTypeDelete.changeButtonCaption('Удаление...');
-    // 
+    // Отправляем промис на удаление карточки
     api.deleteCard(card.getId())
         .then(() => {
-            //
+            // Если карточка удалена на сервере, то удаляем её из разметки
             cardDOM.remove();
             // Вывод в консоль (опционально)
             console.log('Карточка удалена.');
-            //
+            // Закрываем попап
             popupTypeDelete.close();
-            // Меняем надпись на кнопке на исходную
-            popupTypeDelete.changeButtonCaption('Да');
         })
+        // Обработка ошибки
+        .catch(err => {
+            // Вывод в консоль
+            console.log(err);
+        })
+        // Меняем надпись на кнопке на исходную
+        .finally(() => {
+            popupTypeDelete.changeButtonCaption('Да');
+        });
 });
 
 // Попап показа места
@@ -121,7 +141,7 @@ const formAvatarValidator = new FormValidator(formValidationConfig, config.formA
 
 // *** ФУНКЦИИ ***
 
-// Функция создания карточки (В РАБОТЕ: мб исправить удаление)
+// Функция создания карточки
 function createCard(cardData) {
     // Подготавливаем экземпляр класса карточки
     const card = new Card(cardData, config.cardTemplateId,
@@ -144,6 +164,11 @@ function createCard(cardData) {
                         card.renderLikeButton(cardDataUpdated);
                         // Вывод в консоль (опционально)
                         console.log('Поставлен лайк карточке:', card.getId());
+                    })
+                    // Обработка ошибки
+                    .catch(err => {
+                        // Вывод в консоль
+                        console.log(err);
                     });
             // Иначе отправляем промис для того, чтоб его убрать
             } else {
@@ -154,30 +179,15 @@ function createCard(cardData) {
                         // Вывод в консоль (опционально)
                         console.log('Убран лайк у карточки:', card.getId());
                     })
+                    // Обработка ошибки
+                    .catch(err => {
+                        // Вывод в консоль
+                        console.log(err);
+                    });
             }
         });
     // Возвращаем карточку
     return card;
-}
-
-// Функция создания элемента карточки. Эта функция рассчитывет две вспомогательные 
-// логические переменные и вызывает создание DOM-узла карточки: в зависимости от этих переменных
-// карточка может не иметь кнопки удаления или отображаться сразу с закрашенной кропкой лайка.
-function createCardElement(card, userId) {
-    // Записываем результат сравнения id создателя карточки и пользователя в логическую переменную
-    const isCreatedByUser = compareId(card.getOwnerId(), userId);
-    // Записываем в логическую переменную, лайкнута ли карточка пользователем
-    const isLikedByUser = card.isLikedByUser(userId);
-    // Вывод в консоль (опционально)
-    if (isCreatedByUser) {
-        console.log('Подготовлена карточка (создана пользователем):', card)
-    } else {
-        console.log('Подготовлена карточка:', card)
-    };
-    // Создаём DOM-элемент карточки
-    const cardElement = card.generateCard(isCreatedByUser, isLikedByUser);
-    // Возвращаем разметку
-    return cardElement;
 }
 
 // Запись в форму для редактирования профиля данных из блока profile
@@ -187,11 +197,6 @@ function autoFillFormProfile() {
     formProfileName.value = info.name;
     // Вводим в поле с описанием значение из профиля
     formProfileJob.value = info.job;
-}
-
-// Функция, которая сравнивает два id и возвращает true в случае, если они равны
-function compareId(id1, id2) {
-    return (id1 === id2);
 }
 
 // *** КОД ПРИ ЗАГРУЗКЕ ***
@@ -228,76 +233,83 @@ avatarButton.addEventListener('click', () => {
 
 // *** АСИНХРОННАЯ ЧАСТЬ ***
 
-// Отправляем промис на получения информации о профиле
-api.getUserInfo()
-    // Заполняем информацию о пользователе
-    .then(userData => {
+// Отправляем промисы на получение данных о пользователе и массива карточек,
+// и выполняем код только при получении ответов на оба промиса
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+    .then(([userData, initialCardsArray]) => {
+        // Заполняем информацию о пользователе
         userInfo.setUserInfo(userData);
         // Вывод в консоль (опционально)
         console.log('Исходные данные о пользователе: ', userData);
         console.log('Заполнена информация о пользователе: ', userInfo.getUserInfo());
+
+        console.log('Начало заполнения секции исходными карточками...')
+        // Создаём секцию с карточками
+        const photoGrid = new Section({
+            items: initialCardsArray,
+            renderer: (cardData) => {
+                // Создаём карточку по данным
+                const card = createCard(cardData);
+                // Создаём DOM-элемент карточки
+                const cardElement = card.createCardElement(userInfo.getUserInfo().id);
+                // Добавляем карточку в секцию
+                photoGrid.addItem(cardElement);
+            }
+        }, config.photoGridSelector);
+        // Отрисовываем все элементы секции
+        photoGrid.renderItems();
+        // Вывод в консоль (опционально)
+        console.log('Конец заполнения секции исходными карточками.')
+
+        // Объявляем попап добавления карточки
+        const popupTypeAdd = new PopupWithForm(config.popupTypeAddSelector, (evt, info) => {
+            // Отменяем стандартную отправку формы
+            evt.preventDefault();
+            // Готовим объект с информацией о карточке
+            const cardInfo = {
+                name: info[config.placeNameInputName],
+                link: info[config.placeLinkInputName],
+            };
+            // Меняем надпись на кнопке
+            popupTypeAdd.changeButtonCaption('Добавление...');
+
+            // Отправляем промис на добавление карточки
+            api.addCard(cardInfo)
+                .then(cardData => {
+                    // Создаём карточку по данным
+                    const card = createCard(cardData);
+                    // Создаём DOM-элемент карточки
+                    const cardElement = card.createCardElement(userInfo.getUserInfo().id);
+                    // Добавляем карточку в секцию
+                    photoGrid.addItem(cardElement);
+                    // Закрываем попап
+                    popupTypeAdd.close();
+
+                })
+                // Обработка ошибки
+                .catch(err => {
+                    // Вывод в консоль
+                    console.log(err);
+                })
+                // Меняем надпись на кнопке на исходную
+                .finally(() => {
+                    popupTypeAdd.changeButtonCaption('Создать');
+                });
+        });
+
+        // Добавляем слушатели попапу добавления карточки
+        popupTypeAdd.setEventListeners();
+        // Добавляем слушатель кнопке открытия попапа добавления карточки
+        addButton.addEventListener('click', () => {
+            // Убираем все предупреждения об ошибках
+            formPlaceValidator.hideAllInputErrors();
+            // Открываем попап
+            popupTypeAdd.open();
+        });
     })
 
-    // Заполняем секцию с карточками
-    .then(() => {
-        // Отправляем промис на получение массива карточек с сервера
-        api.getInitialCards()
-            .then(initialCardsArray => {
-                // Вывод в консоль (опционально)
-                console.log('Начало заполнения секции исходными карточками...')
-                // Создаём секцию с карточками
-                const photoGrid = new Section({
-                    items: initialCardsArray,
-                    renderer: (cardData) => {
-                        // Создаём карточку по данным
-                        const card = createCard(cardData);
-                        // Создаём DOM-элемент карточки
-                        const cardElement = createCardElement(card, userInfo.getUserInfo().id);
-                        // Добавляем карточку в секцию
-                        photoGrid.addItem(cardElement);
-                    }
-                }, config.photoGridSelector);
-                // Отрисовываем все элементы секции
-                photoGrid.renderItems();
-                // Вывод в консоль (опционально)
-                console.log('Конец заполнения секции исходными карточками.')
-
-                // Объявляем попап добавления карточки
-                const popupTypeAdd = new PopupWithForm(config.popupTypeAddSelector, (evt, info) => {
-                    // Отменяем стандартную отправку формы
-                    evt.preventDefault();
-                    // Готовим объект с информацией о карточке
-                    const cardInfo = {
-                        name: info[config.placeNameInputName],
-                        link: info[config.placeLinkInputName],
-                    };
-                    // Меняем надпись на кнопке
-                    popupTypeAdd.changeButtonCaption('Добавление...');
-
-                    // Отправляем промис на добавление карточки
-                    api.addCard(cardInfo)
-                        .then(cardData => {
-                            // Создаём карточку по данным
-                            const card = createCard(cardData);
-                            // Создаём DOM-элемент карточки
-                            const cardElement = createCardElement(card, userInfo.getUserInfo().id);
-                            // Добавляем карточку в секцию
-                            photoGrid.addItem(cardElement);
-                            // Закрываем попап
-                            popupTypeAdd.close();
-                            // Меняем надпись на кнопке на исходную
-                            popupTypeAdd.changeButtonCaption('Создать');
-                        });
-                });
-
-                // Добавляем слушатели попапу добавления карточки
-                popupTypeAdd.setEventListeners();
-                // Добавляем слушатель кнопке открытия попапа добавления карточки
-                addButton.addEventListener('click', () => {
-                    // Убираем все предупреждения об ошибках
-                    formPlaceValidator.hideAllInputErrors();
-                    // Открываем попап
-                    popupTypeAdd.open();
-                });
-            });
+    // Обработка ошибки
+    .catch(err => {
+        // Вывод в консоль
+        console.log(err);
     });
